@@ -9,12 +9,14 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.gamze.livetv.DatabaseCopyHelper;
 import com.gamze.livetv.Kanallar;
 import com.gamze.livetv.Kanallardao;
@@ -26,6 +28,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
+
+    private ImageView imageView;
 
     private ImageButton imageButtonSil;
 
@@ -41,11 +45,19 @@ public class MainActivity extends AppCompatActivity {
     private ProgressDialog pd;
     VideoView videoView; */
 
+
+
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {    //Toolbar ekle
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        imageView = findViewById(R.id.imageView);
+
+
+        loadImageByInternetUrl();
+
 
 
         kopyala();
@@ -69,6 +81,16 @@ public class MainActivity extends AppCompatActivity {
                 LinearLayoutManager(this));
         adapter =new MyAdapter(this,kanallarArrayList);
         rv.setAdapter(adapter);
+    }
+
+    private void loadImageByInternetUrl(){
+        String internetUrl = "https://www.isimkayit.com/templates/ikmc/img/isimkayit-vds-banner.png";
+        Glide.
+                with(getApplicationContext()).
+                load(internetUrl).centerCrop().
+                into(imageView);
+
+
     }
 
     @Override //Menu ekleme
