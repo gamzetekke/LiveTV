@@ -3,6 +3,7 @@ package com.gamze.livetv.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,9 +19,14 @@ import com.gamze.livetv.Kanallar;
 import com.gamze.livetv.Kanallardao;
 import com.gamze.livetv.R;
 import com.gamze.livetv.VeriTabaniYardimcisi;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 
 
 public class EkleActivity extends AppCompatActivity {
+         private AdView banner1;
 
         private Toolbar toolbar2;
         private EditText editTextAd, editTextUrl;
@@ -31,6 +37,40 @@ public class EkleActivity extends AppCompatActivity {
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_ekle);
+             banner1 = findViewById(R.id.banner1);
+            MobileAds.initialize(this,"ca-app-pub-8525746773990389~1660514575");
+            AdRequest adRequest = new AdRequest.Builder().build();
+
+            banner1.loadAd(adRequest);
+
+            banner1.setAdListener(new AdListener() {
+
+                @Override public void onAdLoaded(){
+                    Log.e("Banner", "onAdLoaded çalıştı");
+                }
+
+                @Override public void onAdFailedToLoad(int i){
+                    Log.e("Banner","onAdFailedToLoad çalıştı");
+                }
+
+                @Override
+                public void onAdOpened() {
+                    Log.e("Banner","onAdOpen çalıştı");
+                }
+
+                @Override public void onAdLeftApplication(){
+                    Log.e("Banner","onAdLeftApplication çalıştı");
+                }
+
+                @Override public void onAdClosed(){
+                    Log.e("Banner","onAdClosed çaıştı");
+
+                }
+
+            });
+
+
+            banner1 = findViewById(R.id.banner);
             buttonEkle = findViewById(R.id.buttonEkle);
             editTextAd = findViewById(R.id.editTextAd);
             editTextUrl = findViewById(R.id.editTextUrl);
@@ -42,7 +82,8 @@ public class EkleActivity extends AppCompatActivity {
 
             setSupportActionBar(toolbar2);
 
-
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
 
 
             buttonEkle.setOnClickListener(new View.OnClickListener() {
@@ -90,22 +131,8 @@ public class EkleActivity extends AppCompatActivity {
             return true;
         }
 
-        @Override
-        public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-
-            switch (item.getItemId()){
-                case R.id.action_geri:
-                    Intent intent = new Intent(this, MainActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
-                    finish();
-                    return true;
-                default:
-                    return super.onOptionsItemSelected(item);
-            }
 
 
-        }
 
         @Override
         public void onBackPressed() {
@@ -114,7 +141,11 @@ public class EkleActivity extends AppCompatActivity {
             finish();
             super.onBackPressed();
         }
-
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
 
     }
 

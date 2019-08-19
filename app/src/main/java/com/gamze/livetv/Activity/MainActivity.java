@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageButton;
@@ -23,13 +24,18 @@ import com.gamze.livetv.Kanallardao;
 import com.gamze.livetv.Adapter.MyAdapter;
 import com.gamze.livetv.R;
 import com.gamze.livetv.VeriTabaniYardimcisi;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ImageView imageView;
+    private AdView banner;
 
     private ImageButton imageButtonSil;
 
@@ -53,10 +59,44 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        imageView = findViewById(R.id.imageView);
+        MobileAds.initialize(this,"ca-app-pub-8525746773990389~1660514575");
+
+        banner = findViewById(R.id.banner);
+
+        AdRequest adRequest = new AdRequest.Builder().build();
+
+        banner.loadAd(adRequest);
+
+        banner.setAdListener(new AdListener() {
+
+            @Override public void onAdLoaded(){
+                Log.e("Banner", "onAdLoaded çalıştı");
+            }
+
+            @Override public void onAdFailedToLoad(int i){
+                Log.e("Banner","onAdFailedToLoad çalıştı");
+            }
+
+            @Override
+            public void onAdOpened() {
+                Log.e("Banner","onAdOpen çalıştı");
+            }
+
+            @Override public void onAdLeftApplication(){
+                Log.e("Banner","onAdLeftApplication çalıştı");
+            }
+
+            @Override public void onAdClosed(){
+                Log.e("Banner","onAdClosed çaıştı");
+
+            }
+
+        });
 
 
-        loadImageByInternetUrl();
+
+
+
 
 
 
@@ -83,15 +123,7 @@ public class MainActivity extends AppCompatActivity {
         rv.setAdapter(adapter);
     }
 
-    private void loadImageByInternetUrl(){
-        String internetUrl = "https://www.isimkayit.com/templates/ikmc/img/isimkayit-vds-banner.png";
-        Glide.
-                with(getApplicationContext()).
-                load(internetUrl).centerCrop().
-                into(imageView);
 
-
-    }
 
     @Override //Menu ekleme
     public boolean onCreateOptionsMenu(Menu menu) {
