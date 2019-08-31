@@ -100,6 +100,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+
         kopyala();
         vt = new VeriTabaniYardimcisi(this);
 
